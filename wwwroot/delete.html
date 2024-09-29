@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete User</title>
+</head>
+<body>
+    <h1>Delete User</h1>
+    <div id="user"></div>
+    <button id="deleteButton">Delete</button>
+    <button onclick="window.location.href='index.html'">Back to List</button>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+
+        fetch(`/users/${userId}`)
+            .then(response => response.json())
+            .then(user => {
+                const userDiv = document.getElementById('user');
+                userDiv.innerHTML = `ID: ${user.id}, Name: ${user.name}, Email: ${user.email}`;
+            });
+
+        document.getElementById('deleteButton').addEventListener('click', function () {
+            fetch(`/users/${userId}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    alert('User deleted successfully');
+                    window.location.href = 'index.html';
+                });
+        });
+    </script>
+</body>
+</html>

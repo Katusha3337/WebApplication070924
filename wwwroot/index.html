@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+</head>
+<body>
+    <h1>User Management</h1>
+    <button onclick="window.location.href='create.html'">Create New User</button>
+    <div id="users"></div>
+
+    <script>
+        function getAllUsers() {
+            fetch('/users')
+                .then(response => response.json())
+                .then(data => {
+                    const usersDiv = document.getElementById('users');
+                    usersDiv.innerHTML = '';
+                    data.forEach(user => {
+                        const userDiv = document.createElement('div');
+                        userDiv.innerHTML = `ID: ${user.id}, Name: ${user.name}, Email: ${user.email}
+                                <button onclick="editUser(${user.id})">Edit</button>
+                                <button onclick="deleteUser(${user.id})">Delete</button>`;
+                        usersDiv.appendChild(userDiv);
+                    });
+                });
+        }
+
+        function editUser(id) {
+            window.location.href = `edit.html?id=${id}`;
+        }
+
+        function deleteUser(id) {
+            window.location.href = `delete.html?id=${id}`;
+        }
+
+        getAllUsers();
+    </script>
+</body>
+</html>
